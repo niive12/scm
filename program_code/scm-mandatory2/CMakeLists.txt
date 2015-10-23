@@ -1,4 +1,4 @@
-project(mandatory2)
+project(scm-mandatory2)
 cmake_minimum_required(VERSION 2.8)
 IF( NOT DEFINED CMAKE_BUILD_TYPE )
     SET(CMAKE_BUILD_TYPE Release)
