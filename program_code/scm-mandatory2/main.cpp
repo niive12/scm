@@ -18,10 +18,10 @@ struct assignmentParameters {
     static constexpr auto workcellPath="../Kr16WallWorkCell/Scene.wc.xml";
     static constexpr double extend = 0.1; //For qualitative test and LUA output
     static constexpr double maxRRTTimeSeconds = 120.0; //For each RRT
-    static constexpr double minExtend = 0.005; //Statistics, start with this
+    static constexpr double minExtend = 0.05; //Statistics, start with this
     static constexpr double maxExtend = 3.5; //Statistics, end with this (or a little smaller)
-    static constexpr double incrExtend = 0.005; //Increment by this, starting from minExtend.
-    static constexpr size_t numTrials = 100; //Repeated trials
+    static constexpr double incrExtend = 0.1; //Increment by this, starting from minExtend.
+    static constexpr size_t numTrials = 30; //Repeated trials
     static constexpr auto outputFile="../output.lua";
     static constexpr auto statsFile="../statistics.txt";
 };
@@ -91,13 +91,17 @@ bool checkCollisions(Device::Ptr device, const State &state, const CollisionDete
  * @param extend Parameter for RRT algorithm, also known as epsilon.
  * @return RRT planner pointer.
  */
-QToQPlanner::Ptr getRRTPlanner(Device::Ptr device, const State &state, CollisionDetector &detector, double extend=0.05) {
+QToQPlanner::Ptr getRRTPlanner(Device::Ptr device,
+                               const State &state,
+                               CollisionDetector &detector,
+                               double extend=0.05,
+                               RRTPlanner::PlannerType plannerType = RRTPlanner::RRTConnect ) {
     PlannerConstraint constraint = PlannerConstraint::make(&detector,device,state);
     //Sampler will generate random (uniformly distributed) joint configurations within the constraints.
     QSampler::Ptr sampler = QSampler::makeConstrained(QSampler::makeUniform(device),constraint.getQConstraintPtr());
     //Euclidean metric weighs all joints the same -> 180 degrees in one joint weighs the same as 180 in the next.
     QMetric::Ptr metric = MetricFactory::makeEuclidean<Q>();
-    return RRTPlanner::makeQToQPlanner(constraint,sampler,metric,extend,RRTPlanner::RRTConnect);
+    return RRTPlanner::makeQToQPlanner(constraint,sampler,metric,extend,plannerType);
 }
 
 
@@ -152,7 +156,7 @@ void one(WorkCell::Ptr workcell, Device::Ptr device,
     Kinematics::gripFrame(bottleFrame,gripperFrame,state);
 
     //Initialize RRT planner.
-    planner=getRRTPlanner(device,state,detector,extend);
+    planner=getRRTPlanner(device,state,detector,extend,RRTPlanner::RRTConnect);
     //Collision check for q_pick and q_place
     if (!( checkCollisions(device, state, detector, q_pick)&&
            checkCollisions(device, state, detector, q_place)
@@ -502,6 +506,7 @@ list<pathStatistic> analyzePaths(const multimap<double,pathCharacteristics> &sta
 void stats(
         WorkCell::Ptr workcell,
         Device::Ptr device,
+        RRTPlanner::PlannerType plannerType=RRTPlanner::RRTConnect,
         double maxTimePerRRT=240.0,
         double minExtend=0.05,
         double maxExtend=0.5,
@@ -540,14 +545,15 @@ void stats(
     const float done=static_cast<float>(numTrials);
     float progress=0.0;
     const double lastExtend = (maxExtend-increaseStep);
-    cout << "Collecting RRT data with extend ranging from " << minExtend << " to " << lastExtend << "." << endl;
+    cout << "Collecting RRT data with extend ranging from " << minExtend << " to " << lastExtend << ".\n";
+    cout << "Output filename: \"" << statsFilename << "\"." << endl;
     cout << progressBar(progress);
     for(size_t i=0; i<numTrials; ++i) {
         progress = (static_cast<float>(i))/done;
         for(double extend=minExtend, dif=(lastExtend-minExtend)*done; extend<maxExtend; extend+=increaseStep) {
             device->setQ(q_pick,state);
             //Initialize RRT planner.
-            planner=getRRTPlanner(device,state,detector,extend);
+            planner=getRRTPlanner(device,state,detector,extend,plannerType);
             //Collision check for q_pick and q_place
             if (!( checkCollisions(device, state, detector, q_pick)&&
                    checkCollisions(device, state, detector, q_place)
@@ -672,12 +678,40 @@ int main()
 
     stats(workcell,
           device,
+          RRTPlanner::RRTConnect,
           assignmentParameters::maxRRTTimeSeconds,
           assignmentParameters::minExtend,
           assignmentParameters::maxExtend,
           assignmentParameters::incrExtend,
           assignmentParameters::numTrials,
-          assignmentParameters::statsFile);
+          "../rrtconnect.txt");
+    stats(workcell,
+          device,
+          RRTPlanner::RRTBidirectional,
+          assignmentParameters::maxRRTTimeSeconds,
+          assignmentParameters::minExtend,
+          assignmentParameters::maxExtend,
+          assignmentParameters::incrExtend,
+          assignmentParameters::numTrials,
+          "../rrtbidirectional.txt");
+    stats(workcell,
+          device,
+          RRTPlanner::RRTBalancedBidirectional,
+          assignmentParameters::maxRRTTimeSeconds,
+          assignmentParameters::minExtend,
+          assignmentParameters::maxExtend,
+          assignmentParameters::incrExtend,
+          assignmentParameters::numTrials,
+          "../rrtbalancedbidirectional.txt");
+    stats(workcell,
+          device,
+          RRTPlanner::RRTBasic,
+          assignmentParameters::maxRRTTimeSeconds,
+          assignmentParameters::minExtend,
+          assignmentParameters::maxExtend,
+          assignmentParameters::incrExtend,
+          assignmentParameters::numTrials,
+          "../rrtbasic.txt");
 
 
     cout << "Program ended." << endl;
