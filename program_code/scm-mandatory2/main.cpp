@@ -17,11 +17,11 @@
 struct assignmentParameters {
     static constexpr auto workcellPath="../Kr16WallWorkCell/Scene.wc.xml";
     static constexpr double extend = 0.1; //For qualitative test and LUA output
-    static constexpr double maxRRTTimeSeconds = 120.0; //For each RRT
+    static constexpr double maxRRTTimeSeconds = 320.0; //For each RRT
     static constexpr double minExtend = 0.05; //Statistics, start with this
     static constexpr double maxExtend = 6.5; //Statistics, end with this (or a little smaller)
     static constexpr double incrExtend = 0.1; //Increment by this, starting from minExtend.
-    static constexpr size_t numTrials = 30; //Repeated trials
+    static constexpr size_t numTrials = 10; //Repeated trials
     static constexpr size_t hugeNumTrials = 1000;
     static constexpr auto outputFile="../output.lua";
     //static constexpr auto statsFile="../statistics.txt";
@@ -644,11 +644,11 @@ double stats(
     output.close();
 
 
-    double theBestEfficiency = 1000000.0;
+    double theShortestDistance = 1000000.0;
     double theOptimalExtend = 0.0;
     for(auto &s:statistics) {
-        if((s.rrt_exec_time_median*s.jointspace_distance_median)<theBestEfficiency) {
-            theBestEfficiency=(s.rrt_exec_time_median*s.jointspace_distance_median);
+        if((s.jointspace_distance_median)<theShortestDistance) {
+            theShortestDistance=(s.jointspace_distance_median);
             theOptimalExtend = s.extend;
         }
     }
@@ -665,9 +665,23 @@ double stats(
  * Then calls stats() once, generating the output statistics text file.
  * @see assignmentParameters.
  */
-int main()
+int main(int argc, char **argv)
 {
-    cout << "Program started." << endl;
+    cout << "Program started.\n" << endl;
+    if ( !(argc >= 2) ) {
+        cerr << "Input problem. Just pass the number of trials as argument." << endl;
+        return -1;
+    }
+    string filename(argv[1]);
+
+    stringstream ss;
+    ss << filename;
+    size_t num_trials;
+    ss >> num_trials;
+
+
+
+    cout << "Program started. Number of trials: " << num_trials << endl;
     Math::seed();
 
     const string workcellPath(assignmentParameters::workcellPath);
@@ -699,7 +713,7 @@ int main()
           assignmentParameters::minExtend,
           assignmentParameters::maxExtend,
           assignmentParameters::incrExtend,
-          assignmentParameters::numTrials,
+          num_trials,
           "../rrtconnect.txt");
     double rrtbiExtend = stats(workcell,
           device,
@@ -708,7 +722,7 @@ int main()
           assignmentParameters::minExtend,
           assignmentParameters::maxExtend,
           assignmentParameters::incrExtend,
-          assignmentParameters::numTrials,
+          num_trials,
           "../rrtbidirectional.txt");
     double rrtbalExtend = stats(workcell,
           device,
@@ -717,7 +731,7 @@ int main()
           assignmentParameters::minExtend,
           assignmentParameters::maxExtend,
           assignmentParameters::incrExtend,
-          assignmentParameters::numTrials,
+          num_trials,
           "../rrtbalancedbidirectional.txt");
 
 
@@ -727,7 +741,7 @@ int main()
           device,
           RRTPlanner::RRTConnect,
           assignmentParameters::maxRRTTimeSeconds,
-          rrtconExtend,rrtconExtend,
+          rrtconExtend,rrtconExtend+assignmentParameters::incrExtend/2.0,
           assignmentParameters::incrExtend,
           assignmentParameters::hugeNumTrials,
           "../rrtconnect_optimal_extend.txt"
@@ -736,7 +750,7 @@ int main()
           device,
           RRTPlanner::RRTBidirectional,
           assignmentParameters::maxRRTTimeSeconds,
-          rrtbiExtend,rrtbiExtend,
+          rrtbiExtend,rrtbiExtend+assignmentParameters::incrExtend/2.0,
           assignmentParameters::incrExtend,
           assignmentParameters::hugeNumTrials,
           "../rrtbidirectional_optimal_extend.txt"
@@ -745,7 +759,7 @@ int main()
           device,
           RRTPlanner::RRTBalancedBidirectional,
           assignmentParameters::maxRRTTimeSeconds,
-          rrtbalExtend,rrtbalExtend,
+          rrtbalExtend,rrtbalExtend+assignmentParameters::incrExtend/2.0,
           assignmentParameters::incrExtend,
           assignmentParameters::hugeNumTrials,
           "../rrtbalancedbidirectional_optimal_extend.txt"
