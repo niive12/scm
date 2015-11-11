@@ -1,0 +1,44 @@
+exploratory experiment
+for two different RRT algorithm implementations:
+what is the correlation between epsilon and jointspace path length?
+what is the correlation between epsilon and RRT execution time?
+
+So is there a correlation, basically? (YES!)
+We have non-normal data (we can see from the plots),
+but clearly there is a relationship.
+Spearman's rank correlation coefficient, which checks for non linear correlation.
+
+
+Define:
+The best measure of algorithm efficiency is (jointspace path length  *  RRT execution time).
+Optimal epsilon of the algorithm is min(jointspace path length  *  RRT execution time)
+
+By using the medians, which are insensitive to outliers,
+for each algorithm,
+find the optimal epsilon.
+This is just an intermediate step for the next algorithm.
+
+
+Comparative experiment
+Hypothesis: Algorithm 1 is as efficient as algorithm 2, when they each use their optimal epsilon.
+So do they have the same mean?!
+
+So perform lots of trials with algorithm 1 | optimal epsilon 1
+and perform lots of trials with algorithm 2 | optimal epsilon 2
+
+this way, if it looks normally distributed, we have enough samples to say that it F*'in IS!
+
+Is the data (algorithm efficiency) normally distributed?
+QQplot for each algorithm.
+
+
+Do they have the same variance? F-test
+ // // // // // (if normal, Bartlett. If not, Levene's test) what am i
+
+If they have the same variance
+  Z-test (do they have the same fucking mean)????
+  // // // // // student's t test?!?!?!? This is when both are normally dist, and have the same variance
+If they don't have the same variance (this is very likely, if optimal epsilons are different!)
+  Welch's t-test (they are still normally distributed)
+  
+
