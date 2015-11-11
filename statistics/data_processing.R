@@ -1,41 +1,41 @@
-mean_bar_plot <- function(input, labels=1, xlab=NULL, ylab=NULL,main=NULL, error=TRUE){
-	if(labels[1] == 1){
-		labels = 1:dim(input)[2]
-	}
-	input.mean = apply(input,2,mean)
-	input.var = apply(input,2,var)
-	limits = c(0, max(input.mean))
-	if(error){
-		limits = c(0, max(input.mean+input.var))
-	}
-	mid_bar = barplot(input.mean, names.arg=labels,ylim=limits, col="gray", axis.lty=1, main=main, xlab=xlab, ylab=ylab)
-	if(error){
-		arrows(mid_bar,input.mean+input.var, mid_bar, input.mean-input.var, angle=90, code=3, length=0.1)
+source("explorative.R")
+
+# extend,number_of_states,RRT_execution_time,gripper_distance_cart,robot_distance_jointspace,path_exec_time
+eps_tested = seq(0.05,6.4,0.1)
+rrtconnect       = read.csv("rrtconnect.txt")
+for( i in 2:length(rrtconnect$extend) ){
+	if(rrtconnect$extend[i] > rrtconnect$extend[i-1]){
+		number_of_tests = i -1 
+		break
 	}
 }
 
-eps_tested = seq(0.05,6.5,0.1)
-number_of_tets = 30
-time =   matrix(0,number_of_tets,length(eps_tested))
-length = matrix(0,number_of_tets,length(eps_tested))
-epsilon = matrix(0,number_of_tets,length(eps_tested))
+rrtbidirect = read.csv("rrtbidirectional.txt")
+rrtbalanced = read.csv("rrtbalancedbidirectional.txt")
 
+# names       = c("RRT Bidirectional","RRT Connected Bidirectional","RRT Connect")
+# colors      = c("red","green","blue")
+# pch         = array(15,3)
 
-rrtconnect       = read.csv("rrtconnect.txt")
-setEPS()
-postscript("timeVSepsilon.eps",height = 4, width = 8)
-mean_bar_plot(time,xlab="epsilon", ylab="Average Time [ms]", labels=eps_tested,error=FALSE)
-q = dev.off()
+names       = c("RRT Bidirectional","RRT Connected Bidirectional")
+colors      = c("red","green")
+pch         = array(15,2)
+            
+bidirect    = see_correlation(rrtbidirect$extend, rrtbidirect$robot_distance_jointspace, eps_tested, number_of_tests, method = names[1] )
+balanced    = see_correlation(rrtbidirect$extend, rrtbalanced$robot_distance_jointspace, eps_tested, number_of_tests, method = names[2] )
+# connect     = see_correlation( rrtconnect$extend,  rrtconnect$robot_distance_jointspace, eps_tested, number_of_tests, method = names[3] )
+            
+bid_time    = find_median(rrtbidirect$RRT_execution_time,number_of_tests)$median
+bal_time    = find_median(rrtbalanced$RRT_execution_time,number_of_tests)$median
+# con_time    = find_median( rrtconnect$RRT_execution_time,number_of_tests)$median
 
-setEPS()
-postscript("distVSepsilon.eps",height = 4, width = 8)
-mean_bar_plot(length,xlab="epsilon", ylab="Average Path Length [m]", labels=eps_tested,error=TRUE)
-q = dev.off()
+ plot(eps_tested, bid_time, col=colors[1], type="l", lwd=3,ylab="time")
+lines(eps_tested, bal_time, col=colors[2], type="l", lwd=3)
+# lines(eps_tested, con_time, col=colors[3], type="l", lwd=3)
+legend("topright",legend=names,pch=pch,cex=0.8,col=colors)
 
-rrtbidirectional = read.csv("rrtbidirectional.txt")
-rrtbalanced      = read.csv("rrtbalanced.txt")
+ plot(eps_tested, bidirect$median, col=colors[1], type="l", lwd=3)
+lines(eps_tested, balanced$median, col=colors[2], type="l", lwd=3)
+# lines(eps_tested, connect$median,  col=colors[3], type="l", lwd=3)
+legend("bottomright",legend=names,pch=pch,cex=0.8,col=colors)
 
-# find median.
-# median_length * median_time
-
-cor.test(length,epsilon, method = "spearman")
