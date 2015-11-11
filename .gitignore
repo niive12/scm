@@ -1,3 +1,6 @@
+/program_code/rrtconnect_optimal_extend.txt
+/program_code/rrtbidirectional_optimal_extend.txt
+/program_code/rrtbalancedbidirectional_optimal_extend.txt
 /program_code/rrtbalancedbidirectional.txt
 /program_code/rrtbidirectional.txt
 /program_code/output.lua
