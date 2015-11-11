@@ -19,11 +19,12 @@ struct assignmentParameters {
     static constexpr double extend = 0.1; //For qualitative test and LUA output
     static constexpr double maxRRTTimeSeconds = 120.0; //For each RRT
     static constexpr double minExtend = 0.05; //Statistics, start with this
-    static constexpr double maxExtend = 3.5; //Statistics, end with this (or a little smaller)
+    static constexpr double maxExtend = 6.5; //Statistics, end with this (or a little smaller)
     static constexpr double incrExtend = 0.1; //Increment by this, starting from minExtend.
     static constexpr size_t numTrials = 30; //Repeated trials
+    static constexpr size_t hugeNumTrials = 1000;
     static constexpr auto outputFile="../output.lua";
-    static constexpr auto statsFile="../statistics.txt";
+    //static constexpr auto statsFile="../statistics.txt";
 };
 
 /**
@@ -503,7 +504,7 @@ list<pathStatistic> analyzePaths(const multimap<double,pathCharacteristics> &sta
  * Afterwards, passes the collected data to a call to analyzePaths()
  * and stores everything (statistics and data) in a file.
  */
-void stats(
+double stats(
         WorkCell::Ptr workcell,
         Device::Ptr device,
         RRTPlanner::PlannerType plannerType=RRTPlanner::RRTConnect,
@@ -588,47 +589,49 @@ void stats(
     ofstream output(statsFilename);
     if(!output.is_open())
         throw runtime_error("Output file \""+statsFilename+"\" could not be opened.");
-    //Output statistics
-    output << "#Statistics:\n#Max time per RRT [s]: " << maxTimePerRRT << '\n'
-           << "#extend,number_of_states_min,number_of_states_max,number_of_states_average,"
-              "number_of_states_median,number_of_states_stddev,rrt_exec_time_min,"
-              "rrt_exec_time_max,rrt_exec_time_average,rrt_exec_time_median,"
-              "rrt_exec_time_stddev,gripper_distance_min,gripper_distance_max,"
-              "gripper_distance_average,gripper_distance_median,gripper_distance_stddev,"
-              "jointspace_distance_min,jointspace_distance_max,jointspace_distance_average,"
-              "jointspace_distance_median,jointspace_distance_stddev,path_time_min,"
-              "path_time_max,path_time_average,path_time_median,path_time_stddev\n";
-    for(auto &s:statistics) {
-        output << setprecision(14) <<
-                  s.extend << ',' <<
-                  s.number_of_states_min << ',' <<
-                  s.number_of_states_max << ',' <<
-                  s.number_of_states_average << ',' <<
-                  s.number_of_states_median << ',' <<
-                  s.number_of_states_stddev << ',' <<
-                  s.rrt_exec_time_min << ',' <<
-                  s.rrt_exec_time_max << ',' <<
-                  s.rrt_exec_time_average << ',' <<
-                  s.rrt_exec_time_median << ',' <<
-                  s.rrt_exec_time_stddev << ',' <<
-                  s.gripper_distance_min << ',' <<
-                  s.gripper_distance_max << ',' <<
-                  s.gripper_distance_average << ',' <<
-                  s.gripper_distance_median << ',' <<
-                  s.gripper_distance_stddev << ',' <<
-                  s.jointspace_distance_min << ',' <<
-                  s.jointspace_distance_max << ',' <<
-                  s.jointspace_distance_average << ',' <<
-                  s.jointspace_distance_median << ',' <<
-                  s.jointspace_distance_stddev << ',' <<
-                  s.path_time_min << ',' <<
-                  s.path_time_max << ',' <<
-                  s.path_time_average << ',' <<
-                  s.path_time_median << ',' <<
-                  s.path_time_stddev << '\n';
-    }
+//    //Output statistics
+//    output << "#Statistics:\n#Max time per RRT [s]: " << maxTimePerRRT << '\n'
+//           << "#extend,number_of_states_min,number_of_states_max,number_of_states_average,"
+//              "number_of_states_median,number_of_states_stddev,rrt_exec_time_min,"
+//              "rrt_exec_time_max,rrt_exec_time_average,rrt_exec_time_median,"
+//              "rrt_exec_time_stddev,gripper_distance_min,gripper_distance_max,"
+//              "gripper_distance_average,gripper_distance_median,gripper_distance_stddev,"
+//              "jointspace_distance_min,jointspace_distance_max,jointspace_distance_average,"
+//              "jointspace_distance_median,jointspace_distance_stddev,path_time_min,"
+//              "path_time_max,path_time_average,path_time_median,path_time_stddev\n";
+//    for(auto &s:statistics) {
+//        output << setprecision(14) <<
+//                  s.extend << ',' <<
+//                  s.number_of_states_min << ',' <<
+//                  s.number_of_states_max << ',' <<
+//                  s.number_of_states_average << ',' <<
+//                  s.number_of_states_median << ',' <<
+//                  s.number_of_states_stddev << ',' <<
+//                  s.rrt_exec_time_min << ',' <<
+//                  s.rrt_exec_time_max << ',' <<
+//                  s.rrt_exec_time_average << ',' <<
+//                  s.rrt_exec_time_median << ',' <<
+//                  s.rrt_exec_time_stddev << ',' <<
+//                  s.gripper_distance_min << ',' <<
+//                  s.gripper_distance_max << ',' <<
+//                  s.gripper_distance_average << ',' <<
+//                  s.gripper_distance_median << ',' <<
+//                  s.gripper_distance_stddev << ',' <<
+//                  s.jointspace_distance_min << ',' <<
+//                  s.jointspace_distance_max << ',' <<
+//                  s.jointspace_distance_average << ',' <<
+//                  s.jointspace_distance_median << ',' <<
+//                  s.jointspace_distance_stddev << ',' <<
+//                  s.path_time_min << ',' <<
+//                  s.path_time_max << ',' <<
+//                  s.path_time_average << ',' <<
+//                  s.path_time_median << ',' <<
+//                  s.path_time_stddev << '\n';
+//    }
+
+
     //Output data used for statistics
-    output << "#Data:\n#extend,number_of_states,RRT_execution_time,"
+    output << "extend,number_of_states,RRT_execution_time,"
               "gripper_distance_cart,robot_distance_jointspace,path_exec_time\n";
     for(auto &d:statmap)
         output << d.first << ',' <<
@@ -639,6 +642,19 @@ void stats(
                   d.second.pathExecutionTime << '\n';
 
     output.close();
+
+
+    double theBestEfficiency = 1000000.0;
+    double theOptimalExtend = 0.0;
+    for(auto &s:statistics) {
+        if((s.rrt_exec_time_median*s.jointspace_distance_median)<theBestEfficiency) {
+            theBestEfficiency=(s.rrt_exec_time_median*s.jointspace_distance_median);
+            theOptimalExtend = s.extend;
+        }
+    }
+
+
+    return theOptimalExtend;
 }
 
 /**
@@ -676,7 +692,7 @@ int main()
         assignmentParameters::maxRRTTimeSeconds,
         assignmentParameters::outputFile);
 
-    stats(workcell,
+    double rrtconExtend = stats(workcell,
           device,
           RRTPlanner::RRTConnect,
           assignmentParameters::maxRRTTimeSeconds,
@@ -685,7 +701,7 @@ int main()
           assignmentParameters::incrExtend,
           assignmentParameters::numTrials,
           "../rrtconnect.txt");
-    stats(workcell,
+    double rrtbiExtend = stats(workcell,
           device,
           RRTPlanner::RRTBidirectional,
           assignmentParameters::maxRRTTimeSeconds,
@@ -694,7 +710,7 @@ int main()
           assignmentParameters::incrExtend,
           assignmentParameters::numTrials,
           "../rrtbidirectional.txt");
-    stats(workcell,
+    double rrtbalExtend = stats(workcell,
           device,
           RRTPlanner::RRTBalancedBidirectional,
           assignmentParameters::maxRRTTimeSeconds,
@@ -703,15 +719,37 @@ int main()
           assignmentParameters::incrExtend,
           assignmentParameters::numTrials,
           "../rrtbalancedbidirectional.txt");
+
+
+
+    //for the optimal extends, MORE STATISTICS!
     stats(workcell,
           device,
-          RRTPlanner::RRTBasic,
+          RRTPlanner::RRTConnect,
           assignmentParameters::maxRRTTimeSeconds,
-          assignmentParameters::minExtend,
-          assignmentParameters::maxExtend,
+          rrtconExtend,rrtconExtend,
           assignmentParameters::incrExtend,
-          assignmentParameters::numTrials,
-          "../rrtbasic.txt");
+          assignmentParameters::hugeNumTrials,
+          "../rrtconnect_optimal_extend.txt"
+          );
+    stats(workcell,
+          device,
+          RRTPlanner::RRTBidirectional,
+          assignmentParameters::maxRRTTimeSeconds,
+          rrtbiExtend,rrtbiExtend,
+          assignmentParameters::incrExtend,
+          assignmentParameters::hugeNumTrials,
+          "../rrtbidirectional_optimal_extend.txt"
+          );
+    stats(workcell,
+          device,
+          RRTPlanner::RRTBalancedBidirectional,
+          assignmentParameters::maxRRTTimeSeconds,
+          rrtbalExtend,rrtbalExtend,
+          assignmentParameters::incrExtend,
+          assignmentParameters::hugeNumTrials,
+          "../rrtbalancedbidirectional_optimal_extend.txt"
+          );
 
 
     cout << "Program ended." << endl;
