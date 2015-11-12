@@ -48,6 +48,8 @@ postscript("../document/graphics/compare_distance.eps",width=figwidth,height=fig
  plot(eps_tested, bidirect$median, col=colors[1], type="l", lwd=3,xlab=expression(paste(epsilon," [Jointspace units]")),ylab=expression(paste(d[J]," [Jointspace units]")))
 lines(eps_tested, balanced$median, col=colors[2], type="l", lwd=3)
 # lines(eps_tested, connect$median,  col=colors[3], type="l", lwd=3)
+lines(c(bidirect$optimal_extend,bidirect$optimal_extend),c(0,min(bidirect$median)) ,type="l")
+lines(c(balanced$optimal_extend,balanced$optimal_extend),c(0,min(balanced$median)) ,type="l")
 legend("bottomright",legend=names,pch=pch,cex=0.8,col=colors)
 
 
