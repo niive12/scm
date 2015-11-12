@@ -7,12 +7,13 @@ Thus a median was found in order to compare the performance.
 In figure \ref{fig:bidir_correlated} can the distance of the trials for bidirectional RRT be seen with the median highlighted.
 In figure \ref{fig:balanced_correlated} can the results be seen for the balanced bidirectional RRT.
 
-The Spearman's Rank Correlation, with the null-hypothesis that \(d_J\) is uncorrelated with \(\epsilon\) gave a p-value of \(1\cdot 10^{-19}\) for the bidirectional and a p-value of \(6\cdot 10^{-21}\) for the balanced bidirectional RRT.
+The Spearman's Rank Correlation, with the null-hypothesis that \(d_J\) is uncorrelated with \(\epsilon\),
+gave a p-value of \(1\cdot 10^{-19}\) for the bidirectional and a p-value of \(6\cdot 10^{-21}\) for the balanced bidirectional RRT.
 This means in both cases are the \(d_J\) and \(\epsilon\) correlated.
 
 To give each algorithm the best chance to provide the optimal path, the optimal \(\epsilon\) was found for both algorithms.
 The optimal \(\epsilon\) was found by taking the lowest median.
-For Bidirectional, the optimal \(\epsilon\) was found to be 2.25 and for Balanced Bidirectional it was found to be 2.15.
+For Bidirectional, the optimal \(\epsilon\) was found to be \(2.25\) and for Balanced Bidirectional it was found to be \(2.15\).
 
 \begin{figure}[h]
  \centering
@@ -41,17 +42,8 @@ Whether the difference is significant requires further investigation.
 
 \subsection{Algorithm comparison}
 
-By plotting the histogram of the path length with the optimal \(\epsilon\), as seen in figure \ref{fig:bidir_histogram} and \ref{fig:balanced_histogram}, it can be seen that it is not normally distributed. 
-From the QQ plot it can be seen that the correlation between a normal distribution is exponential.
-The data is transformed into log space.
-The QQ plots of the transformed data looks linear, but to be certain is a shapiro wilks test applied to test for normality.
-The p-value for the bidirectional was \(1.5\cdot10^{-3}\) and for the balanced bidirectional it was \(4.2\cdot10^{-4}\).
-This suggest the data is still not normally distributed.
-To test if the variances are equal, an F test is applied.
-The p-value is  \(0.087\), the variance is significantly different.
-
-Since the variances are different, the method to test if the mean is different, is the Welch's t-test.
-The p-value is:  0.10, the mean are significantly different, the bidirectional RRT is the better planner in a confined space.
+By plotting the histogram of the path length with the optimal \(\epsilon\), as seen in figure \ref{fig:bidir_histogram} and \ref{fig:balanced_histogram}, 
+it can be seen that it is not normally distributed. 
 
 \begin{figure}[h]
  \centering
@@ -67,6 +59,8 @@ The p-value is:  0.10, the mean are significantly different, the bidirectional R
  \label{fig:balanced_histogram}
 \end{figure}
 
+From the QQ plot, seen in figure \ref{fig:bidir_qq} and \ref{fig:balanced_qq}, can it be seen that the correlation between a normal distribution is exponential.
+
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_op_bi}
@@ -81,6 +75,18 @@ The p-value is:  0.10, the mean are significantly different, the bidirectional R
  \label{fig:balanced_qq}
 \end{figure}
 
+To adjust for this, the data is transformed into log space.
+The QQ plots of the transformed data, as seen in figure \ref{fig:bidir_log_qq} and \ref{fig:balanced_log_qq}, the plot looks linear, 
+but to be certain is a shapiro wilks test applied to test for normality.
+The p-value for the bidirectional was \(4.5\cdot10^{-3}\) and for the balanced bidirectional it was \(4.2\cdot10^{-4}\).
+This suggest the data is still not normally distributed.
+To test if the variances are equal, an F test is applied.
+The p-value is  \(0.928\), the variance is significantly different.
+
+Since the variances are different, the method to test if the mean is different, is the Welch's t-test.
+The p-value is: \(0.042\), the mean are not significantly different, the bidirectional RRT cannot be said to be a better planner in a confined space.
+
+
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_tran_op_bi}
@@ -94,6 +100,4 @@ The p-value is:  0.10, the mean are significantly different, the bidirectional R
  \caption{Normal QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
  \label{fig:balanced_log_qq}
 \end{figure}
-
-
 
