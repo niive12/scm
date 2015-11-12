@@ -20,7 +20,7 @@ for( i in 2:length(rrtbidirect$extend) ){
 # pch         = array(15,3)
 
 names       = c("RRT Bidirectional","RRT Balanced Bidirectional")
-colors      = c("red","green")
+colors      = c("red","blue")
 pch         = array(15,2)
 
 figwidth = 10
@@ -39,13 +39,13 @@ bal_time    = find_median(rrtbalanced$RRT_execution_time,number_of_tests)$median
 cat("------------------- Comparative experiment -------------------\n")
 
 postscript("../document/graphics/compare_time.eps",width=figwidth,height=figheight)
- plot(eps_tested, bid_time, col=colors[1], type="l", lwd=3,ylab="Time",xlab="Extend")
+ plot(eps_tested, bid_time, col=colors[1], type="l", lwd=3,xlab=expression(paste(epsilon," [Jointspace units]")),ylab=expression(paste("Time [S]")))
 lines(eps_tested, bal_time, col=colors[2], type="l", lwd=3)
 # lines(eps_tested, con_time, col=colors[3], type="l", lwd=3)
 legend("topright",legend=names,pch=pch,cex=0.8,col=colors)
 
 postscript("../document/graphics/compare_distance.eps",width=figwidth,height=figheight)
- plot(eps_tested, bidirect$median, col=colors[1], type="l", lwd=3,ylab="Distance Traveled",xlab="Extend")
+ plot(eps_tested, bidirect$median, col=colors[1], type="l", lwd=3,xlab=expression(paste(epsilon," [Jointspace units]")),ylab=expression(paste(d[J]," [Jointspace units]")))
 lines(eps_tested, balanced$median, col=colors[2], type="l", lwd=3)
 # lines(eps_tested, connect$median,  col=colors[3], type="l", lwd=3)
 legend("bottomright",legend=names,pch=pch,cex=0.8,col=colors)
@@ -57,14 +57,14 @@ balanced_op       = read.csv("rrtbalancedbidirectional_optimal_extend.txt")
 # is the data normally distributed?
 n = length(bidirect_op$extend)
 postscript("../document/graphics/hist_op_bi.eps",width=figwidth,height=figheight)
-hist(bidirect_op$robot_distance_jointspace)
+hist(bidirect_op$robot_distance_jointspace,xlab=expression(paste(d[J]," [Jointspace units]")),main=NULL)
 postscript("../document/graphics/hist_op_ba.eps",width=figwidth,height=figheight)
-hist(balanced_op$robot_distance_jointspace)
+hist(balanced_op$robot_distance_jointspace,xlab=expression(paste(d[J]," [Jointspace units]")),main=NULL)
 
 postscript("../document/graphics/qq_op_bi.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),bidirect_op$robot_distance_jointspace)
+qqplot(rnorm(10^3),bidirect_op$robot_distance_jointspace,ylab=expression(paste(d[J]," [Jointspace units]")))
 postscript("../document/graphics/qq_op_ba.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),balanced_op$robot_distance_jointspace)
+qqplot(rnorm(10^3),balanced_op$robot_distance_jointspace,ylab=expression(paste(d[J]," [Jointspace units]")))
 
 cat("The data is not normally distributed. We transform the data into log space.\n")
 
@@ -72,14 +72,14 @@ transformed_bi = log(bidirect_op$robot_distance_jointspace)
 transformed_ba = log(balanced_op$robot_distance_jointspace)
 
 postscript("../document/graphics/hist_tran_op_bi.eps",width=figwidth,height=figheight)
-hist(transformed_bi)
+hist(transformed_bi,xlab=expression(paste(d[J]," [Jointspace units]")),main=NULL)
 postscript("../document/graphics/hist_tran_op_ba.eps",width=figwidth,height=figheight)
-hist(transformed_ba)
+hist(transformed_ba,xlab=expression(paste(d[J]," [Jointspace units]")),main=NULL)
 
 postscript("../document/graphics/qq_tran_op_bi.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),transformed_bi)
+qqplot(rnorm(10^3),transformed_bi,ylab=expression(paste(d[J]," [Jointspace units]")))
 postscript("../document/graphics/qq_tran_op_ba.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),transformed_ba)
+qqplot(rnorm(10^3),transformed_ba,ylab=expression(paste(d[J]," [Jointspace units]")))
 
 cat("just to be certain: shapiro wilks test for normality\n")
 cat(c("p-value bidirectional: ", shapiro.test(transformed_bi)$p.value, ", balanced: ", shapiro.test(transformed_ba)$p.value,"\n"))
