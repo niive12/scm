@@ -3,7 +3,7 @@ source("functions.R")
 see_correlation <- function(eps, dist, eps_tested, number_of_tests, method){
 	median = find_median(dist,number_of_tests)$median
 
-	plot(eps, dist,col="blue",main=method,xlab="Extend",ylab="Distance traveled")
+	plot(eps, dist,col="blue",main=method,xlab="Extend",ylab="Distance Traveled")
 	lines(eps_tested, median, col="red", type="l",lwd=3);
 
 	cat(c("The extend parameter and the distance traveled in joint space for ",method," is "))
