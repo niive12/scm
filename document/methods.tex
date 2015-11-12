@@ -27,3 +27,25 @@ of \(d_J\).
 This means the optimal \(\epsilon\) is selected
 according to the collected data,
 as the one which yielded the smallest median of \(d_J\).
+
+\subsection{Algorithm comparison}
+The algorithms are compared on \(d_J\),
+given the optimal values \(\epsilon_{bi}\) and \(\epsilon_{ba}\)
+of the bidirectional and balanced bidirectional RRT algorithms respectively.
+The correct method of comparison must be based
+on the distributions of \(d_J\) for the different algorithms.
+These distributions may be assumed to be positively skewed.
+They may not be assumed to have equal variance.
+The distributions are transformed using the log-transform,
+to make the normal distribution assumption valid.
+
+The log-transformed distributions are tested for equal variance
+using Fisher's F-test.
+As the distributions do not have the same variance,
+the comparison of means is carried out with a two-sided Welch's t-test.
+This test will determine if the means of the two distributions are equal.
+A large p-value implies different means, and thereby that one algorithm
+yields smaller \(d_J\) than the other.
+Thus, the algorithm with the smallest sample mean can be expected
+to yield smaller \(d_J\) than the other, and thereby produce the shortest
+path for the serial robot to travel.
