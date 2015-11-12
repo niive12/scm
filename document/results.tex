@@ -24,7 +24,7 @@ For Bidirectional, the optimal \(\epsilon\) was found to be 2.25 and for Balance
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/balanced_correlation}
- \caption{\(d_J\) of the balanced RRT planner (blue) with median highlighted (red).}
+ \caption{\(d_J\) of the balanced bidirectional RRT planner (blue) with median highlighted (red).}
  \label{fig:balanced_correlated}
 \end{figure}
 
@@ -35,8 +35,8 @@ Whether the difference is significant requires further investigation.
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/compare_distance}
- \caption{Median \(d_J\) of the RRT planners.}
- \label{fig:balanced_correlated}
+ \caption{Medians of \(d_J\) for the RRT planners.}
+ \label{fig:medians}
 \end{figure}
 
 \subsection{Algorithm comparison}
@@ -57,42 +57,42 @@ The p-value is:  0.10, the mean are significantly different, the bidirectional R
  \centering
  \includegraphics[width=\figsize]{graphics/hist_op_bi}
  \caption{Histogram for \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner.}
- \label{fig:balanced_correlated}
+ \label{fig:bidir_histogram}
 \end{figure}
 
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/hist_op_ba}
  \caption{Histogram for \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner.}
- \label{fig:balanced_correlated}
+ \label{fig:balanced_histogram}
 \end{figure}
 
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_op_bi}
- \caption{QQ plot for \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner.}
- \label{fig:balanced_correlated}
+ \caption{Normal QQ plot for \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
+ \label{fig:bidir_qq}
 \end{figure}
 
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_op_ba}
- \caption{QQ plot for \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner.}
- \label{fig:balanced_correlated}
+ \caption{Normal QQ plot for \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
+ \label{fig:balanced_qq}
 \end{figure}
 
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_tran_op_bi}
- \caption{QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner.}
- \label{fig:balanced_correlated}
+ \caption{Normal QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
+ \label{fig:bidir_log_qq}
 \end{figure}
 
 \begin{figure}[h]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_tran_op_ba}
- \caption{QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner.}
- \label{fig:balanced_correlated}
+ \caption{Normal QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
+ \label{fig:balanced_log_qq}
 \end{figure}
 
 
