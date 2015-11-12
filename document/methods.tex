@@ -1,1 +1,17 @@
 \section{Methods} 
+To choose the optimal value of \(\epsilon\) for each algorithm,
+it must first be verified that the parameter is correlated
+with the jointspace distance traveled, \(d_J\).
+As the environment is constrained in that there is a minimum \(d_J\)
+that the robot must travel, the distribution of \(d_J\) for each
+value of \(\epsilon\) is expected have positive skew,
+rather than being a normal distribution.
+Due to the nature of the RRT algorithm, it is also expected that
+the choice of \(\epsilon\) is not trivial;
+Too large a value will make the robot move in too large steps,
+and too small a value will make the random tree branch in
+undesirable directions, both cases resulting in a large, suboptimal \(d_J\).
+Thus, the relation between \(\epsilon\) and \(d_J\) can not be expected to be linear.
+The correlation between \(\epsilon\) and \(d_J\) is tested using
+Spearman's Rank Correlation, with the null-hypothesis that \(d_J\)
+is uncorrelated with \(\epsilon\).
