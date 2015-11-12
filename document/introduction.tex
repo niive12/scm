@@ -13,6 +13,15 @@ A KukaKr16 robot is given the task of picking up a bottle from a crate and placi
 The space is confined by a wall and truck so the robot has to spin around itself in order to reach the goal.
 The simulated setup can be seen in figure \ref{fig:worckcell_bottle_picked}.
 
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=\figsize]{graphics/robworkpic}
+ \caption{RobWork simulation workcell with KukaKr16 robot.
+ The RRT algorithms are applied to the problem of moving the bottle
+ in a collision-free path from the red box to the table.}
+ \label{fig:worckcell_bottle_picked}
+\end{figure}
+
 The RRT planners takes a parameter, \(\epsilon\), which defines the aggressiveness of the algorithm.
 To evaluate the performance of the algorithm, the path length, \(d_J\), is calculated.
 Since the space is explored in random directions, the path length will not be the same after every trial.
