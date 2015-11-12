@@ -64,9 +64,9 @@ postscript("../document/graphics/hist_op_ba.eps",width=figwidth,height=figheight
 hist(balanced_op$robot_distance_jointspace,xlab=expression(paste(d[J]," [Jointspace units]")),main=NULL)
 
 postscript("../document/graphics/qq_op_bi.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),bidirect_op$robot_distance_jointspace,ylab=expression(paste(d[J]," [Jointspace units]")))
+qqplot(rnorm(10^3),bidirect_op$robot_distance_jointspace,ylab=expression(paste(d[J]," [Jointspace units]")),xlab="Normal theoretical quantiles")
 postscript("../document/graphics/qq_op_ba.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),balanced_op$robot_distance_jointspace,ylab=expression(paste(d[J]," [Jointspace units]")))
+qqplot(rnorm(10^3),balanced_op$robot_distance_jointspace,ylab=expression(paste(d[J]," [Jointspace units]")),xlab="Normal theoretical quantiles")
 
 cat("The data is not normally distributed. We transform the data into log space.\n")
 
@@ -79,9 +79,9 @@ postscript("../document/graphics/hist_tran_op_ba.eps",width=figwidth,height=figh
 hist(transformed_ba,xlab=expression(paste(d[J]," [Jointspace units]")),main=NULL)
 
 postscript("../document/graphics/qq_tran_op_bi.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),transformed_bi,ylab=expression(paste(d[J]," [Jointspace units]")))
+qqplot(rnorm(10^3),transformed_bi,ylab=expression(paste(d[J]," [Jointspace units]")),xlab="Normal theoretical quantiles")
 postscript("../document/graphics/qq_tran_op_ba.eps",width=figwidth,height=figheight)
-qqplot(rnorm(10^3),transformed_ba,ylab=expression(paste(d[J]," [Jointspace units]")))
+qqplot(rnorm(10^3),transformed_ba,ylab=expression(paste(d[J]," [Jointspace units]")),xlab="Normal theoretical quantiles")
 
 cat("just to be certain: shapiro wilks test for normality\n")
 cat(c("p-value bidirectional: ", shapiro.test(transformed_bi)$p.value, ", balanced: ", shapiro.test(transformed_ba)$p.value,"\n"))
