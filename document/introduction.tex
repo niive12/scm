@@ -1,8 +1,8 @@
 \section{Introduction} 
 
-Rapidly exploring random tree (RRT) is a path planning algorithm which builds a tree of random possible moves. 
+Rapidly exploring random tree (RRT) is a path planning algorithm which explores a space by building a tree of random possible moves. 
 Each branch is built by extending in a random direction.
-This is called \(\epsilon\).
+The extend distance is called \(\epsilon\).
 
 The bidirectional RRT is a method which builds two trees, one from the goal position and one from the start position. 
 When the entire space is explored, a path can be found as a series of steps.
@@ -14,7 +14,7 @@ A KukaKr16 robot is given the task of picking up a bottle from a crate and placi
 The space is confined by a wall and truck so the robot has to spin around itself in order to reach the goal.
 The simulated setup can be seen in figure \ref{fig:worckcell_bottle_picked}.
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/robworkpic}
  \caption{RobWork simulation workcell with KukaKr16 robot.
