@@ -38,6 +38,13 @@ These distributions may be assumed to be positively skewed.
 They may not be assumed to have equal variance.
 The distributions are transformed using the log-transform,
 to make the normal distribution assumption valid.
+This assumption is verified by inspection of the histograms
+and QQ-plots of each algorithm data set.
+A normality test is also carried out using the Shapiro Wilks Test.
+This test is expected to imply non-normality even for small
+non-normalities with large sample sizes. In contrast,
+large sample sizes make the violation of the normality assumption
+less important due to the central limit theorem.
 
 The log-transformed distributions are tested for equal variance
 using Fisher's F-test.
