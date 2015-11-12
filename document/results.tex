@@ -12,14 +12,14 @@ To give each algorithm the best chance to provide the optimal path, the optimal 
 The optimal \(\epsilon\) was found by taking the lowest median.
 For Bidirectional, the optimal \(\epsilon\) was found to be \(2.25\) and for Balanced Bidirectional it was found to be \(2.15\).
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/bidirectional_correlation}
  \caption{\(d_J\) of the bidirectional RRT planner (blue) with median highlighted (red).}
  \label{fig:bidir_correlated}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/balanced_correlation}
  \caption{\(d_J\) of the balanced bidirectional RRT planner (blue) with median highlighted (red).}
@@ -30,26 +30,25 @@ In figure \ref{fig:medians} can the median distances be seen.
 The median distance is observed to be higher on the balanced bidirectional. 
 Whether the difference is significant requires further investigation.
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/compare_distance}
  \caption{Medians of \(d_J\) for the RRT planners.}
  \label{fig:medians}
 \end{figure}
-
 \subsection{Algorithm comparison}
 
 By plotting the histogram of the path length with the optimal \(\epsilon\), as seen in figure \ref{fig:bidir_histogram} and \ref{fig:balanced_histogram}, 
 it can be seen that it is not normally distributed. 
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/hist_op_bi}
  \caption{Histogram for \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner.}
  \label{fig:bidir_histogram}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/hist_op_ba}
  \caption{Histogram for \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner.}
@@ -58,14 +57,14 @@ it can be seen that it is not normally distributed.
 
 From the QQ plot, seen in figure \ref{fig:bidir_qq} and \ref{fig:balanced_qq}, can it be seen that the correlation between a normal distribution is exponential.
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_op_bi}
  \caption{Normal QQ plot for \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
  \label{fig:bidir_qq}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_op_ba}
  \caption{Normal QQ plot for \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
@@ -84,14 +83,14 @@ Since the variances are different, the method to test if the mean is different, 
 The p-value is: \(0.042\), the mean are not significantly different, the bidirectional RRT cannot be said to be a better planner in a confined space.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_tran_op_bi}
  \caption{Normal QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
  \label{fig:bidir_log_qq}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
  \centering
  \includegraphics[width=\figsize]{graphics/qq_tran_op_ba}
  \caption{Normal QQ plot for the log transformed \(d_J\) with the optimal \(\epsilon\) for the balanced bidirectional RRT planner. The normal distribution is approximated with 1000 samples.}
