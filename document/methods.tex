@@ -1,4 +1,5 @@
-\section{Methods} 
+\section{Methods}
+\subsection{Optimal \(\epsilon\) selection}
 To choose the optimal value of \(\epsilon\) for each algorithm,
 it must first be verified that the parameter is correlated
 with the jointspace distance traveled, \(d_J\).
@@ -15,3 +16,14 @@ Thus, the relation between \(\epsilon\) and \(d_J\) can not be expected to be li
 The correlation between \(\epsilon\) and \(d_J\) is tested using
 Spearman's Rank Correlation, with the null-hypothesis that \(d_J\)
 is uncorrelated with \(\epsilon\).
+
+If correlation is shown, the relationship
+between \(\epsilon\) and \(d_J\) can be used
+to select an optimal \(\epsilon\) so that
+\(d_J\) is minimized.
+Due to the positive skew in the distribution
+of \(d_J\), the selection is based on the median
+of \(d_J\).
+This means the optimal \(\epsilon\) is selected
+according to the collected data,
+as the one which yielded the smallest median of \(d_J\).
