@@ -1,8 +1,7 @@
 \section{Introduction} 
 
 Rapidly exploring random tree (RRT) is an algorithm builds a random tree of possible
-moves. Each branch is build by extending in a random direction in \(\epsilon\) joint space units. The branch distance is
-forwardly being referred to as epsilon. 
+moves. Each branch is build by extending in a random direction in \(\epsilon\) joint space units.  
 
 The Bidirectional RRT is a method which builds two trees, one from the goal position and one from the start position. 
 When the entire space is explored, a path can be found as a series of steps.
@@ -15,7 +14,7 @@ The space is confined by a wall and truck so the robot has to spin around itself
 The simulated setup can be seen in figure \ref{fig:worckcell_bottle_picked}.
 
 The RRT planners takes a parameter, \(\epsilon\), which defines the aggressiveness of the algorithm.
-To evaluate the performance of the algorithm, the path length is calculated.
+To evaluate the performance of the algorithm, the path length, \(d_J\), is calculated.
 Since the space is explored in random directions, the path length will not be the same after every trial.
 The hypothesis is the \(\epsilon\) is correlated with the path length and thus there is an optimal \(\epsilon\) for the given configuration.
 

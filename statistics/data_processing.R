@@ -88,11 +88,11 @@ cat("This is ignored... We have a lot of data points\n")
 alpha = 0.05
 
 cat("Is the variances equal?\n")
-p_var = 1 - var.test(bidirect_op$robot_distance_jointspace, balanced_op$robot_distance_jointspace)$p.value
+p_var = var.test(bidirect_op$robot_distance_jointspace, balanced_op$robot_distance_jointspace)$p.value
 
 cat(c("P-value is: ",p_var,"\t"))
 if (p_var > alpha) {
-  cat("H0 accepted, The variance are significantly different.\n")
+  cat("H0 accepted, The variance is significantly different.\n")
 } else {
   cat("H0 rejected, They have an equal variance.\n")
 }
@@ -104,7 +104,7 @@ p_value = t.test(transformed_bi,transformed_ba,alternative="two.sided", var.equa
 cat(c("P-value is: ",p_value,"\t"))
 
 if (p_value > alpha) {
-  cat("H0 accepted, The mean are significantly different.\n")
+  cat("H0 accepted, The mean is significantly different.\n")
 } else {
   cat("H0 rejected, They have an equal mean.\n")
 }
