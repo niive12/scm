@@ -4,6 +4,10 @@
 \usepackage{float}
 
 \newcommand{\figsize}{0.9 \linewidth}
+\usepackage[numbers]{natbib} %Natbib supports both [i] and Author (year) citation styles. \citet and \citep replace \cite.
+%\bibliographystyle{ieeetran}
+\bibliographystyle{plainnat}
+
 
 %opening
 \title{Comparison of Bidirectional Rapidly exploring Random Tree algorithms}
@@ -23,4 +27,7 @@
 \input{results}
 \input{conclusion}
 
+\bibliography{references}
+
 \end{document}
+ 
