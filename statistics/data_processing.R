@@ -22,36 +22,46 @@ for( i in 2:length(rrtbidirect$extend) ){
 names       = c("RRT Bidirectional","RRT Balanced Bidirectional")
 colors      = c("red","green")
 pch         = array(15,2)
-            
+
+
+setEPS()
+postscript("../document/graphics/bidirectional_correlation.eps",width=5,height=10)
 bidirect    = see_correlation(rrtbidirect$extend, rrtbidirect$robot_distance_jointspace, eps_tested, number_of_tests, method = names[1] )
+postscript("../document/graphics/balanced_correlation.eps",width=5,height=10)
 balanced    = see_correlation(rrtbidirect$extend, rrtbalanced$robot_distance_jointspace, eps_tested, number_of_tests, method = names[2] )
 # connect     = see_correlation( rrtconnect$extend,  rrtconnect$robot_distance_jointspace, eps_tested, number_of_tests, method = names[3] )
             
 bid_time    = find_median(rrtbidirect$RRT_execution_time,number_of_tests)$median
 bal_time    = find_median(rrtbalanced$RRT_execution_time,number_of_tests)$median
 # con_time    = find_median( rrtconnect$RRT_execution_time,number_of_tests)$median
+cat("------------------- Comparative experiment -------------------\n")
 
+postscript("../document/graphics/compare_time.eps",width=5,height=10)
  plot(eps_tested, bid_time, col=colors[1], type="l", lwd=3,ylab="Time",xlab="Extend")
 lines(eps_tested, bal_time, col=colors[2], type="l", lwd=3)
 # lines(eps_tested, con_time, col=colors[3], type="l", lwd=3)
 legend("topright",legend=names,pch=pch,cex=0.8,col=colors)
 
+postscript("../document/graphics/compare_distance.eps",width=5,height=10)
  plot(eps_tested, bidirect$median, col=colors[1], type="l", lwd=3,ylab="Distance Traveled",xlab="Extend")
 lines(eps_tested, balanced$median, col=colors[2], type="l", lwd=3)
 # lines(eps_tested, connect$median,  col=colors[3], type="l", lwd=3)
 legend("bottomright",legend=names,pch=pch,cex=0.8,col=colors)
 
-cat("------------------- Comparative experiment -------------------\n")
 
 bidirect_op       = read.csv("rrtbidirectional_optimal_extend.txt")
 balanced_op       = read.csv("rrtbalancedbidirectional_optimal_extend.txt")
 
 # is the data normally distributed?
 n = length(bidirect_op$extend)
+postscript("../document/graphics/hist_op_bi.eps",width=5,height=10)
 hist(bidirect_op$robot_distance_jointspace)
+postscript("../document/graphics/hist_op_ba.eps",width=5,height=10)
 hist(balanced_op$robot_distance_jointspace)
 
+postscript("../document/graphics/qq_op_bi.eps",width=5,height=10)
 qqplot(rnorm(10^3),bidirect_op$robot_distance_jointspace)
+postscript("../document/graphics/qq_op_ba.eps",width=5,height=10)
 qqplot(rnorm(10^3),balanced_op$robot_distance_jointspace)
 
 cat("The data is not normally distributed. We transform the data into log space.\n")
@@ -59,10 +69,14 @@ cat("The data is not normally distributed. We transform the data into log space.
 transformed_bi = log(bidirect_op$robot_distance_jointspace)
 transformed_ba = log(balanced_op$robot_distance_jointspace)
 
+postscript("../document/graphics/hist_tran_op_bi.eps",width=5,height=10)
 hist(transformed_bi)
+postscript("../document/graphics/hist_tran_op_ba.eps",width=5,height=10)
 hist(transformed_ba)
 
+postscript("../document/graphics/qq_tran_op_bi.eps",width=5,height=10)
 qqplot(rnorm(10^3),transformed_bi)
+postscript("../document/graphics/qq_tran_op_ba.eps",width=5,height=10)
 qqplot(rnorm(10^3),transformed_ba)
 
 cat("just to be certain: shapiro wilks test for normality\n")
