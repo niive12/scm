@@ -39,7 +39,7 @@
 		  A small p-value means equal variances.
 		  We will get a large p-value, so the variances are NOT equal.
     2.2)	Since the variances are different, the method we will use to test for difference in means,
-		is: Welch's t-test: t.test(Y,X, var.equal = FALSE)
+		is: Welch's t-test: t.test(Y,X, var.equal = FALSE, alternative="two.sided")
 		The test null hypothesis is the two means are equal.
 		The two-sided alternative hypothesis is that the two means are not equal.
 		So, a small p-value is UNDESIRABLE, because it would mean that the means are equal.
