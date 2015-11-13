@@ -1,9 +1,15 @@
 \begin{abstract}
 The bi\-directional and balanced bi\-directional Rapidly exploring Random Tree (RRT) algorithms
-for serial robot path finding are compared in the RobWork \citep{robwork} environment.
-%methods
-It is concluded that the bidirectional RRT algorithm yields
-a smaller joint space distance traveled 
+for serial robot path planning are compared in the RobWork \citep{robwork} environment.
+The correlation between the tree expansion parameter \(\epsilon\)
+and the jointspace distance traveled is investigated for each algorithm.
+Based on the results of this investigation,
+an optimal \(\epsilon\) is chosen for each algorithm,
+and the algorithms are compared with respect
+to distance traveled in jointspace.
+It is concluded that, for the given configuration,
+the bidirectional RRT algorithm yields
+a smaller jointspace distance traveled 
 than the balanced bidirectional RRT,
 each with their optimal \(\epsilon\) parameters.
 \end{abstract}

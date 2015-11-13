@@ -1,12 +1,18 @@
 \section{Conclusion} 
 The jointspace distance traveled \(d_J\) by the serial robot was
 found to correlate with the RRT extension step parameter \(\epsilon\).
+\(H_{0,corr}\) is rejected.
 The values of \(\epsilon\) yielding the smallest \(d_J\) for the
 bidirectional and balanced bidirectional RRT algorithms
 were found to be 2.25 and 2.15 jointspace units respectively.
-Using these values, \(d_J\) of the different algorithms were compared,
-and it was found that the bidirectional RRT algorithm yielded
-smaller distances than the balanced RRT algorithm.
-The hypothesis that the balanced bidirectional RRT algorithm
-would yield smaller distances for its optimal \(\epsilon\) than
-the bidirectional RRT algorithm is rejected.
+A general tendency for the bidirectional RRT planner
+to yield smaller \(d_J\) was observed, and it was hypthesized
+that the bidirectional RRT planner would yield smaller \(d_J\)
+than the balanced bidirectional RRT, when both algorithms
+were configured with optimal \(\epsilon\).
+
+Using the found values of \(\epsilon\),
+jointspace distances \(d_J\) of the different algorithms were compared
+using Welch's t-test. With a p-value of \(0.042\),
+no algorithm yielded significantly shorter \(d_J\) than the other.
+\(H_{0,comp}\) is accepted.

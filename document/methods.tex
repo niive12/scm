@@ -1,14 +1,15 @@
 \section{Methods}
 \subsection{Optimal \(\epsilon\) selection}
+In the configuration shown in figure \ref{fig:worckcell_bottle_picked},
 \(d_J\) was sampled \(n_1=100\) times for each algorithm,
 for each \(\epsilon = 0.05, 0.15, 0.25, ..., 6.45\).
 
-To choose the optimal value of \(\epsilon\) for each algorithm,
+To be able to determine an optimal value of \(\epsilon\) for each algorithm,
 it must first be verified that the parameter is correlated
 with the jointspace distance traveled, \(d_J\).
 As the environment is constrained in that there is a minimum \(d_J\)
-that the robot must travel, the distribution of \(d_J\) for each
-value of \(\epsilon\) is expected have positive skew,
+that the robot must travel, the sampled distribution of \(d_J\) for each
+value of \(\epsilon\) is expected to have positive skew,
 rather than being a normal distribution.
 Due to the nature of the RRT algorithm, it is also expected that
 the choice of \(\epsilon\) is not trivial;
@@ -24,7 +25,7 @@ If correlation is shown, the relationship
 between \(\epsilon\) and \(d_J\) can be used
 to select an optimal \(\epsilon\) so that
 \(d_J\) is minimized.
-Due to the positive skew in the distribution
+Due to the positive skew and random outliers in the distribution
 of \(d_J\), the selection is based on the median
 of \(d_J\).
 This means the optimal \(\epsilon\) is selected
@@ -39,7 +40,7 @@ of the bidirectional and balanced bidirectional RRT algorithms respectively.
 The correct method of comparison must be based
 on the distributions of \(d_J\) for the different algorithms.
 These distributions may be assumed to be positively skewed.
-They may not be assumed to have equal variancer.
+They may not be assumed to have equal variance.
 The distributions are transformed using the log-transform,
 to make the normal distribution assumption valid.
 This assumption is verified by inspection of the histograms
@@ -57,6 +58,8 @@ the comparison of means is carried out with a two-sided Welch's t-test.
 This test will determine if the means of the two distributions are equal.
 A large p-value implies different means, and thereby that one algorithm
 yields smaller \(d_J\) than the other.
-In this case, the algorithm with the smallest sample mean can be expected
-to yield smaller \(d_J\) than the other, and thereby produce the shortest
+In this case, the algorithm with the smallest sample mean in the log-transformed jointspace,
+can be expected to yield smaller \(d_J\) than the other, and thereby produce the shortest
 path for the serial robot to travel.
+If the p-value is small, it can not be said with confidence that one algorithm
+yields smaller \(d_J\) than the other.
